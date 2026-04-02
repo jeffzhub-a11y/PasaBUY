@@ -1,0 +1,126 @@
+{
+  "entities": {
+    "User": {
+      "title": "User Profile",
+      "description": "User profile information including role and contact details.",
+      "type": "object",
+      "properties": {
+        "uid": { "type": "string" },
+        "email": { "type": "string", "format": "email" },
+        "displayName": { "type": "string" },
+        "role": { "type": "string", "enum": ["customer", "rider", "seller", "admin"] },
+        "photoURL": { "type": "string" },
+        "phoneNumber": { "type": "string" },
+        "isVerified": { "type": "boolean" },
+        "idPhotoURL": { "type": "string" },
+        "location": {
+          "type": "object",
+          "properties": {
+            "lat": { "type": "number" },
+            "lng": { "type": "number" }
+          }
+        },
+        "walletBalance": { "type": "number" },
+        "createdAt": { "type": "string", "format": "date-time" }
+      },
+      "required": ["uid", "email", "role"]
+    },
+    "Order": {
+      "title": "Order",
+      "description": "A shopping and delivery request.",
+      "type": "object",
+      "properties": {
+        "id": { "type": "string" },
+        "customerId": { "type": "string" },
+        "riderId": { "type": "string" },
+        "sellerId": { "type": "string" },
+        "status": { "type": "string", "enum": ["pending", "accepted", "purchasing", "delivering", "completed", "cancelled"] },
+        "items": {
+          "type": "array",
+          "items": {
+            "type": "object",
+            "properties": {
+              "description": { "type": "string" },
+              "quantity": { "type": "number" },
+              "unit": { "type": "string" },
+              "price": { "type": "number" }
+            }
+          }
+        },
+        "customRequest": { "type": "string" },
+        "deliveryAddress": { "type": "string" },
+        "deliveryLocation": {
+          "type": "object",
+          "properties": {
+            "lat": { "type": "number" },
+            "lng": { "type": "number" }
+          }
+        },
+        "totalPrice": { "type": "number" },
+        "deliveryFee": { "type": "number" },
+        "adminFee": { "type": "number" },
+        "adminFeeStatus": { "type": "string", "enum": ["pending", "paid", "confirmed"] },
+        "paymentMethod": { "type": "string", "enum": ["cash", "gcash", "maya"] },
+        "paymentStatus": { "type": "string", "enum": ["unpaid", "paid", "verified"] },
+        "receiptURL": { "type": "string" },
+        "proofOfPurchaseURL": { "type": "string" },
+        "proofOfDeliveryURL": { "type": "string" },
+        "customerApprovedPrices": { "type": "boolean" },
+        "createdAt": { "type": "string", "format": "date-time" },
+        "updatedAt": { "type": "string", "format": "date-time" }
+      },
+      "required": ["customerId", "status", "createdAt"]
+    },
+    "Message": {
+      "title": "Message",
+      "description": "Chat message between rider and customer.",
+      "type": "object",
+      "properties": {
+        "id": { "type": "string" },
+        "orderId": { "type": "string" },
+        "senderId": { "type": "string" },
+        "text": { "type": "string" },
+        "createdAt": { "type": "string", "format": "date-time" }
+      },
+      "required": ["orderId", "senderId", "text", "createdAt"]
+    },
+    "Product": {
+      "title": "Product",
+      "description": "Item listed by a seller.",
+      "type": "object",
+      "properties": {
+        "id": { "type": "string" },
+        "sellerId": { "type": "string" },
+        "name": { "type": "string" },
+        "description": { "type": "string" },
+        "price": { "type": "number" },
+        "imageURL": { "type": "string" },
+        "category": { "type": "string" },
+        "isAvailable": { "type": "boolean" }
+      },
+      "required": ["sellerId", "name", "price"]
+    },
+    "Transaction": {
+      "title": "Transaction",
+      "description": "Wallet transaction record.",
+      "type": "object",
+      "properties": {
+        "id": { "type": "string" },
+        "userId": { "type": "string" },
+        "orderId": { "type": "string" },
+        "amount": { "type": "number" },
+        "type": { "type": "string", "enum": ["earning", "withdrawal", "commission", "payment"] },
+        "status": { "type": "string", "enum": ["pending", "completed", "failed"] },
+        "createdAt": { "type": "string", "format": "date-time" }
+      },
+      "required": ["userId", "amount", "type", "createdAt"]
+    }
+  },
+  "firestore": {
+    "users": { "schema": "User", "description": "User profiles and roles." },
+    "orders": { "schema": "Order", "description": "All delivery orders." },
+    "products": { "schema": "Product", "description": "Seller-listed items." },
+    "transactions": { "schema": "Transaction", "description": "Financial records." },
+    "messages": { "schema": "Message", "description": "Chat messages between order participants." }
+  }
+}

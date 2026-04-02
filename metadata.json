@@ -1,0 +1,5 @@
+{
+  "name": "PasaBUY",
+  "description": "On-demand personal shopper and delivery platform connecting customers with riders.",
+  "requestFramePermissions": ["camera", "geolocation"]
+}
